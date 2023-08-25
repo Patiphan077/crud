@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,10 +23,8 @@ Auth::routes();
 Route::get('home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('home/show/{id}', [App\Http\Controllers\HomeController::class, 'show'])->name('show');
 Route::get('home/show2/{id}', [App\Http\Controllers\HomeController::class, 'show2'])->name('show2');
-Route::get('home/create', [App\Http\Controllers\HomeController::class, 'create'])->name('create');
+Route::get('create', [App\Http\Controllers\HomeController::class, 'create'])->name('create');
 
-
-Route::post('home/create', [App\Http\Controllers\HomeController::class, 'create'])->name('create');
-
-Route::put('home/create', [App\Http\Controllers\HomeController::class, 'create'])->name('create');
-Route::delete('home/create', [App\Http\Controllers\HomeController::class, 'create'])->name('create');
+Route::post('store', [App\Http\Controllers\HomeController::class, 'store'])->name('store');
+Route::post('update', [App\Http\Controllers\HomeController::class, 'update'])->name('update');
+Route::post('delete/{id}', [App\Http\Controllers\HomeController::class, 'delete'])->name('delete');

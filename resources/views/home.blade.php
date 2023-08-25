@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container"> <a class="btn btn-primary" href="{{ url('home/create') }}">เพิ่ม</a>
+    <div class="container"> <a class="btn btn-info" href="{{ url('create') }}">เพิ่ม</a>
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
@@ -37,10 +37,13 @@
                                         <td>{{ $item->email }}</td>
                                         <td>{{ $item->position_name }}</td>
                                         <td>
-                                            <a class="btn btn-primary"
-                                                href="{{ url('home/show/' . $item->id) }}">ดูรายละเอียด</a>
-                                            <a class="btn btn-primary" href="{{ url('home/show2/' . $item->id) }}">แก้ไข</a>
-                                            <a class="btn btn-primary" href=>ลบ</a>
+                                            <a class="btn btn-primary"href="{{ url('home/show/' . $item->id) }}">ดูรายละเอียด</a>
+                                            <a class="btn btn-warning" href="{{ url('home/show2/' . $item->id) }}">แก้ไข</a>
+                                            
+                                            <form method=post action="{{ url('delete/' .$item->id) }}" accept-charset="UTF-8" style="display:inline">
+                                                @csrf
+                                                <button type="submit" onclick="return confirm('ยืนยันการลบข้อมูล ??')"class="btn btn-danger"href="{{ url('home') }}">ลบ</button>               
+                                            </form>
                                     </tr>
                                 @endforeach
                             </tbody>

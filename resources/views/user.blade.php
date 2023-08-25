@@ -24,8 +24,6 @@
                                 <th>Email</th>
                                 <th>Position</th>
                                 
-                                
-                                <th width="280px">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -37,7 +35,7 @@
                                 <td>{{ $item->email }}</td>
                                 <td>{{ $item->position_name }}</td>
                                 <td>
-                                <a class="btn btn-primary" href="{{url('home/show/' .$item->id) }}">แก้ไข</a>
+                                    <a class="btn btn-primary" href="{{ url('home') }}"> Back</a>
        
                                 </td>
                             </tr>

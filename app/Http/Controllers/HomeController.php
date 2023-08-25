@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
@@ -42,16 +43,62 @@ class HomeController extends Controller
 
         return view('home', compact('results'));
     }
-    public function create()
+
+    
+    public function create(Request $request)
     {
-        return view('create');
+        $position = DB::table('positions')->select(
+            'position_id',
+            'position_name'
+        )->get();
+
+
+        return view("create", compact('position'));
+        
+
+    }
+    public function update(Request $request)
+    {
+   
+        
+        $users = User::find($request->id);
+        $old = $users;
+        $input = $request->all();
+        $users->name = $input['name'];
+        $users->email = $input['email'];
+        $users->position_id= $input['position'];
+        $users->save();
+
+
+        return redirect(route('home')) ->with ('flash_message','User Update');
+
+
+    }
+    public $delet_id;
+
+    public function delete($id)
+    {
+        $this->delet_id = $id;
+        $users = User::find($id);
+        $users->delete();
+        return redirect('home');
+    }
+
+    public function store (Request $request)
+    {
+     $users = new  User();
+     $input = $request->all();
+     $users->name = $input['First_name'];
+     $users->email = $input['Email_address'];
+     $users->position_id= $input['position'];
+     $users->password = $input['password'];
+     $users->save();
+
+     return redirect('home');
+
 
     }
 
-    public function store ()
-    {
-
-    }
 
     public function show($id)
     {
@@ -92,5 +139,5 @@ class HomeController extends Controller
             ->first();
         return view('exam',compact('filter'));
     }
-
-}
+    
+}                
