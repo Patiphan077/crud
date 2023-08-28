@@ -51,11 +51,7 @@ class HomeController extends Controller
             'position_id',
             'position_name'
         )->get();
-
-
         return view("create", compact('position'));
-        
-
     }
     public function update(Request $request)
     {
@@ -74,14 +70,33 @@ class HomeController extends Controller
 
 
     }
-    public $delet_id;
+    public function delete(Request $request)
+    {   
+        $usernifo = User::find($request->id);  
+        $usernifo->delete();
+        $result = [
+            'data' => $usernifo
+        ];
+        return response()->json($result,200);
+    }
 
-    public function delete($id)
+    public $delete_id;
+    
+    protected $listener = ['deleteConfirmed'=>'deleteUser'];
+
+    public function deleteConfirmation($id)
     {
-        $this->delet_id = $id;
-        $users = User::find($id);
-        $users->delete();
-        return redirect('home');
+        $this->delete_id = $id;
+        $this->dispatchBrowerEvent('show-delete-confirmation');
+
+    }
+
+    public function deleteUser()
+    {
+        $users = User::where('id', $this->delete_id)->first();
+        $users->delete(); 
+
+        $this->dispatchBrowerEvent('userDelete');
     }
 
     public function store (Request $request)
@@ -137,7 +152,10 @@ class HomeController extends Controller
             ->leftJoin('positions', 'users.position_id', '=', 'positions.position_id')
             ->where('users.id', $id)
             ->first();
-        return view('exam',compact('filter'));
-    }
-    
+            $position = DB::table('positions')->select(
+                'position_id',
+                'position_name'
+            )->get();
+        return view('exam',compact('position','filter'));
+    }    
 }                

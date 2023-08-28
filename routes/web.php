@@ -27,4 +27,4 @@ Route::get('create', [App\Http\Controllers\HomeController::class, 'create'])->na
 
 Route::post('store', [App\Http\Controllers\HomeController::class, 'store'])->name('store');
 Route::post('update', [App\Http\Controllers\HomeController::class, 'update'])->name('update');
-Route::post('delete/{id}', [App\Http\Controllers\HomeController::class, 'delete'])->name('delete');
+Route::post('delete', [App\Http\Controllers\HomeController::class, 'delete'])->name('delete');

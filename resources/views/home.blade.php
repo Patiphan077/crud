@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section('content')
@@ -40,9 +41,10 @@
                                             <a class="btn btn-primary"href="{{ url('home/show/' . $item->id) }}">ดูรายละเอียด</a>
                                             <a class="btn btn-warning" href="{{ url('home/show2/' . $item->id) }}">แก้ไข</a>
                                             
-                                            <form method=post action="{{ url('delete/' .$item->id) }}" accept-charset="UTF-8" style="display:inline">
+                                            <form accept-charset="UTF-8" style="display:inline">
+                                                <input type="hidden" name="id" value="{{$item->id}}">
                                                 @csrf
-                                                <button type="submit" onclick="return confirm('ยืนยันการลบข้อมูล ??')"class="btn btn-danger"href="{{ url('home') }}">ลบ</button>               
+                                                <button type="submit" class="btn btn-danger">ลบ</button>               
                                             </form>
                                     </tr>
                                 @endforeach
@@ -54,3 +56,44 @@
         </div>
     </div>
 @endsection
+@section('script')
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('form').on('submit', function(e) {
+                console.log("id");
+                e.preventDefault();
+                
+                var formData = new FormData(this);
+                $.ajax({
+                    method: 'POST',
+                    url: "{{ url('delete') }}",
+                    data: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        console.log(response);
+                           swal.fire({
+                            icon: 'success',
+                            title: `ลบข้อมูล ${response.data.name}`,
+                            text: 'You clicked the button!'
+                        }).then(() => {
+                            location.reload();
+                        });
+                    },
+                    error: function(response) {
+                        // console.log(response.responseJSON.data.name);
+                        swal.fire({
+                            icon: 'error',
+                            title:  `ลบไม่สำเร็จ ${response.responseJSON.data.name}`,
+                            text: 'You clicked the button!'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+    @endsection
+
